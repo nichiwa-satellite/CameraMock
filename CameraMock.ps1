@@ -1,5 +1,5 @@
-#ã‚·ãƒªã‚¢ãƒ«ãƒãƒ¼ãƒˆ
-#èµ·å‹•ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
+#ƒVƒŠƒAƒ‹ƒ|[ƒg
+#‹N“®ƒpƒ‰ƒ[ƒ^
 #Param()
 
 #GLOBAL Variables
@@ -18,7 +18,7 @@ Add-Type -TypeDefinition @"
 "@
 
 #Functions
-#ãƒãƒ¼ãƒˆç•ªå·é¸æŠ
+#ƒ|[ƒg”Ô†‘I‘ğ
 Function SelectPort()
 {
 	$SerialPortNames = [System.IO.Ports.SerialPort]::getportnames()
@@ -41,7 +41,7 @@ Function Initialize( [ref]$SerialPort, [string]$PortName )
 	% {
 		[System.Array]$SerialPort.value += @{
 			ID = $i;
-			Obj = (new-Object System.IO.Ports.SerialPort $_,19200,None,8,one);
+			Obj = (new-Object System.IO.Ports.SerialPort $_,115200,None,8,one);
 			Name = $_;
 			ReadTimeout = 500;
 			WriteTimeout = 100;
@@ -140,7 +140,7 @@ param(
 
 if( (Initialize -SerialPort ([ref]$SerialPort) -PortName (SelectPort)) -eq $false )
 {
-	Write-Host "åˆæœŸåŒ–ã«å¤±æ•—ã—ã¾ã—ãŸã€‚"
+	Write-Host "‰Šú‰»‚É¸”s‚µ‚Ü‚µ‚½B"
 	return
 }
 
@@ -150,17 +150,17 @@ foreach( $Port in [System.Array]$SerialPort )
 {
 	while( 1 )
 	{
-		Write-Host "å—ä¿¡çŠ¶æ…‹ã®ã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—ä¸­"
+		Write-Host "óMó‘Ô‚ÌƒZƒbƒgƒAƒbƒv’†"
 		$RecievePhase = [RecievePhaseCode]::PHASE_INITIALIZE
 		$FirstByteRecievedFlag = $false
 		[System.Array]$ReciveData = $null
 
-		Write-Host "ãƒ‡ãƒ¼ã‚¿å—ä¿¡å¾…æ©Ÿä¸­"
+		Write-Host "ƒf[ƒ^óM‘Ò‹@’†"
 		while( 1 )
 		{
 			if( $Port.Obj.BytesToRead -gt 0 )
 			{
-				Write-Host "ãƒ‡ãƒ¼ã‚¿å—ä¿¡é–‹å§‹"
+				Write-Host "ƒf[ƒ^óMŠJn"
 				break
 			}
 		}
@@ -182,13 +182,13 @@ foreach( $Port in [System.Array]$SerialPort )
 						$RecieveString = $RecieveString + $Data.toString("X2") + " "
 					}
 					Write-Host ""
-					Write-Host "ãƒ‡ãƒ¼ã‚¿å—ä¿¡çµ‚äº†"
+					Write-Host "ƒf[ƒ^óMI—¹"
 					break
 				}
 			}
 		}
 
-		Write-Host "ã‚³ãƒãƒ³ãƒ‰æ¤œå‡ºä¸­"
+		Write-Host "ƒRƒ}ƒ“ƒhŒŸo’†"
 		[Object]$SelectCommand = $null	
 		if( $RecieveString -match "80 80 (.+) 81 81" )
 		{
@@ -205,15 +205,15 @@ foreach( $Port in [System.Array]$SerialPort )
 
 		if( $SelectCommand -eq $null )
 		{
-			Write-Host "è©²å½“ã™ã‚‹ã‚³ãƒãƒ³ãƒ‰ã¯ã‚ã‚Šã¾ã›ã‚“ã§ã—ãŸã€‚"
+			Write-Host "ŠY“–‚·‚éƒRƒ}ƒ“ƒh‚Í‚ ‚è‚Ü‚¹‚ñ‚Å‚µ‚½B"
 			continue
 		}
 
-		Write-Host "ã‚³ãƒãƒ³ãƒ‰ãŒè¦‹ã¤ã‹ã‚Šã¾ã—ãŸã€‚"
+		Write-Host "ƒRƒ}ƒ“ƒh‚ªŒ©‚Â‚©‚è‚Ü‚µ‚½B"
 
 		Write-Host $SelectCommand.Name
 
-		Write-Host "å¿œç­”ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®é€ä¿¡ä¸­"
+		Write-Host "‰“šƒƒbƒZ[ƒW‚Ì‘—M’†"
 		$SelectCommand.ReplyCommand -split " " |
 		% {
 			Write-Host ($_) -noNewLine
@@ -221,7 +221,7 @@ foreach( $Port in [System.Array]$SerialPort )
 			$Port.Obj.Write([Byte]([System.Convert]::ToInt32($_, 16)),0,1)
 		}
 		Write-Host ""
-		Write-Host "å¿œç­”ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®é€ä¿¡å®Œäº†"
+		Write-Host "‰“šƒƒbƒZ[ƒW‚Ì‘—MŠ®—¹"
 	}
 }
 
